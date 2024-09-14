@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Noto+Sans+SC:wght@100..900&family=PT+Sans+Narrow&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="./favicon.ico">
+    <style>
+        div {
+            font-size: 3em;
+            font-family:'Bangers';
+            margin-left: 35px;
+            display: inline;
+        }
+    </style>
+</head>
+<body>
+    <audio controls src="./win10shutdown.mp3"></audio>
+    <audio controls src="./win10startup.mp3"></audio>
+    <img src="./bgimg.jpg">
+    <div></div>
+    <script>
+        const aud=document.querySelectorAll('audio');
+        for (i in aud){
+            aud[i].volume=0.1
+        }
+        const text=document.querySelector('div')
+        let indecator=true
+        window.addEventListener('keydown',shortCut)
+        function shortCut(e){
+            if(e.key===' '){reset()}
+        }
+        async function reset(){
+            indecator ? aud[1].pause() : aud[0].pause()
+            text.innerHTML='Count down started.'
+            await a01SetTimer()
+            await a02WalkingText()
+            function a01SetTimer (){
+                return new Promise(resolve=>{
+                    setTimeout(()=>{
+                        resolve((()=>{
+                            if(indecator){
+                                aud[0].currentTime=0
+                                aud[0].play()
+                            }else{
+                                aud[1].currentTime=0
+                                aud[1].play()
+                            }
+                            indecator=!indecator
+                        }) ())
+                    },60*1000*15)
+                })
+            }
+            function a02WalkingText(){
+                return new Promise(resolve=>resolve(
+                    (()=>{
+                        text.innerHTML="It's walking time!"
+                    } )()
+                ))
+            }
+        }
+    </script>
+</body>
+</html>
